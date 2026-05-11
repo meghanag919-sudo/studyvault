@@ -12,12 +12,11 @@ const iconMap = {
 const Toast = () => {
   const { state, dispatch } = useApp()
   const toast = state.toast
+  const Icon = toast ? iconMap[toast.type] || Info : Info
 
   useEffect(() => {
     if (!toast) return
-    const timer = setTimeout(() => {
-      dispatch({ type: 'HIDE_TOAST' })
-    }, 3500)
+    const timer = setTimeout(() => dispatch({ type: 'HIDE_TOAST' }), 3500)
     return () => clearTimeout(timer)
   }, [toast, dispatch])
 
@@ -32,10 +31,7 @@ const Toast = () => {
             exit={{ opacity: 0, x: 60, scale: 0.9 }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
           >
-            {(() => {
-              const Icon = iconMap[toast.type] || Info
-              return <Icon size={20} className="toast-icon" />
-            })()}
+            <Icon size={20} className="toast-icon" />
             <span className="toast-message">{toast.message}</span>
             <button
               className="toast-close"
